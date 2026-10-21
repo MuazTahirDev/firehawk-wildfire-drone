@@ -1,0 +1,909 @@
+#VRML_SIM R2023b utf8
+
+WorldInfo {
+  title "FireHawk Wildfire Spotter Drone"
+  info [
+    "FireHawk Mk1: custom quadcopter that patrols a forest area,"
+    "detects a wildfire with its onboard camera, hovers to confirm,"
+    "reports the fire GPS position and returns to base."
+  ]
+  basicTimeStep 8
+  defaultDamping Damping {
+    linear 0.5
+    angular 0.5
+  }
+}
+DEF VIEW Viewpoint {
+  orientation -0.1796 0.4335 0.8831 0.8772
+  position -3 -3.2 2.8
+}
+Background {
+  skyColor [
+    0.45 0.68 0.95
+  ]
+}
+DirectionalLight {
+  ambientIntensity 1
+  direction 0.4 -0.4 -1
+  intensity 2.2
+  castShadows TRUE
+}
+DirectionalLight {
+  direction -0.5 0.5 -0.8
+  intensity 0.6
+}
+DEF GROUND Solid {
+  name "ground"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.26 0.47 0.19
+        roughness 1
+        metalness 0
+      }
+      geometry Plane {
+        size 300 300
+      }
+    }
+  ]
+  boundingObject Plane {
+  }
+  locked TRUE
+}
+DEF LANDING_PAD Solid {
+  translation 0 0 0.005
+  name "landing pad"
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.55 0.55 0.58
+        roughness 0.9
+        metalness 0
+      }
+      geometry Box {
+        size 1.4 1.4 0.01
+      }
+    }
+    Transform {
+      translation 0 0 0.006
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.9 0.75 0.1
+            roughness 0.8
+            metalness 0
+          }
+          geometry Box {
+            size 1.0 0.12 0.002
+          }
+        }
+      ]
+    }
+    Transform {
+      translation 0 0.3 0.006
+      children [
+        DEF PAD_STRIPE Shape {
+          appearance PBRAppearance {
+            baseColor 0.9 0.75 0.1
+            roughness 0.8
+            metalness 0
+          }
+          geometry Box {
+            size 0.12 0.5 0.002
+          }
+        }
+      ]
+    }
+    Transform {
+      translation 0 -0.3 0.006
+      children [
+        USE PAD_STRIPE
+      ]
+    }
+  ]
+  boundingObject Box {
+    size 1.4 1.4 0.01
+  }
+  locked TRUE
+}
+DEF RANGER_STATION Solid {
+  translation -4 3 0
+  rotation 0 0 1 0.4
+  name "ranger station"
+  children [
+    Transform {
+      translation 0 0 0.9
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.5 0.35 0.2
+            roughness 1
+            metalness 0
+          }
+          geometry Box {
+            size 2.4 1.8 1.8
+          }
+        }
+      ]
+    }
+    Transform {
+      translation 0 0 2.05
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.35 0.2 0.12
+            roughness 1
+            metalness 0
+          }
+          geometry Cone {
+            bottomRadius 1.9
+            height 0.9
+          }
+        }
+      ]
+    }
+  ]
+  boundingObject Transform {
+    translation 0 0 0.9
+    children [
+      Box {
+        size 2.4 1.8 1.8
+      }
+    ]
+  }
+  locked TRUE
+}
+Solid {
+  translation 8 3 0
+  name "tree 1"
+  children [
+    DEF TREE_TALL Group {
+      children [
+        Transform {
+          translation 0 0 1.6
+          children [
+            Shape {
+              appearance DEF BARK PBRAppearance {
+                baseColor 0.35 0.23 0.12
+                roughness 1
+                metalness 0
+              }
+              geometry Cylinder {
+                radius 0.14
+                height 3.2
+              }
+            }
+          ]
+        }
+        Transform {
+          translation 0 0 3.6
+          children [
+            Shape {
+              appearance DEF LEAVES PBRAppearance {
+                baseColor 0.1 0.32 0.1
+                roughness 1
+                metalness 0
+              }
+              geometry Cone {
+                bottomRadius 1.3
+                height 2.6
+              }
+            }
+          ]
+        }
+        Transform {
+          translation 0 0 4.8
+          children [
+            Shape {
+              appearance USE LEAVES
+              geometry Cone {
+                bottomRadius 0.9
+                height 1.8
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+  boundingObject Transform {
+    translation 0 0 1.6
+    children [
+      Cylinder {
+        radius 0.14
+        height 3.2
+      }
+    ]
+  }
+  locked TRUE
+}
+Solid {
+  translation 12 6 0
+  rotation 0 0 1 1.2
+  name "tree 2"
+  children [
+    DEF TREE_SHORT Group {
+      children [
+        Transform {
+          translation 0 0 1.0
+          children [
+            Shape {
+              appearance USE BARK
+              geometry Cylinder {
+                radius 0.11
+                height 2.0
+              }
+            }
+          ]
+        }
+        Transform {
+          translation 0 0 2.6
+          children [
+            Shape {
+              appearance USE LEAVES
+              geometry Cone {
+                bottomRadius 1.1
+                height 2.2
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+  boundingObject Transform {
+    translation 0 0 1.0
+    children [
+      Cylinder {
+        radius 0.11
+        height 2.0
+      }
+    ]
+  }
+  locked TRUE
+}
+Solid {
+  translation 16 1 0
+  name "tree 3"
+  children [
+    USE TREE_TALL
+  ]
+  boundingObject Transform {
+    translation 0 0 1.6
+    children [
+      Cylinder {
+        radius 0.14
+        height 3.2
+      }
+    ]
+  }
+  locked TRUE
+}
+Solid {
+  translation 21 -3 0
+  rotation 0 0 1 2.1
+  name "tree 4"
+  children [
+    USE TREE_SHORT
+  ]
+  boundingObject Transform {
+    translation 0 0 1.0
+    children [
+      Cylinder {
+        radius 0.11
+        height 2.0
+      }
+    ]
+  }
+  locked TRUE
+}
+Solid {
+  translation 9 -4 0
+  name "tree 5"
+  children [
+    USE TREE_TALL
+  ]
+  boundingObject Transform {
+    translation 0 0 1.6
+    children [
+      Cylinder {
+        radius 0.14
+        height 3.2
+      }
+    ]
+  }
+  locked TRUE
+}
+Solid {
+  translation 4 -8 0
+  rotation 0 0 1 0.8
+  name "tree 6"
+  children [
+    USE TREE_SHORT
+  ]
+  boundingObject Transform {
+    translation 0 0 1.0
+    children [
+      Cylinder {
+        radius 0.11
+        height 2.0
+      }
+    ]
+  }
+  locked TRUE
+}
+Solid {
+  translation 19 -14 0
+  name "tree 7"
+  children [
+    USE TREE_TALL
+  ]
+  boundingObject Transform {
+    translation 0 0 1.6
+    children [
+      Cylinder {
+        radius 0.14
+        height 3.2
+      }
+    ]
+  }
+  locked TRUE
+}
+Solid {
+  translation 8 -15 0
+  rotation 0 0 1 1.7
+  name "tree 8"
+  children [
+    USE TREE_TALL
+  ]
+  boundingObject Transform {
+    translation 0 0 1.6
+    children [
+      Cylinder {
+        radius 0.14
+        height 3.2
+      }
+    ]
+  }
+  locked TRUE
+}
+Solid {
+  translation 2 5 0
+  name "tree 9"
+  children [
+    USE TREE_SHORT
+  ]
+  boundingObject Transform {
+    translation 0 0 1.0
+    children [
+      Cylinder {
+        radius 0.11
+        height 2.0
+      }
+    ]
+  }
+  locked TRUE
+}
+Solid {
+  translation 24 4 0
+  name "tree 10"
+  children [
+    USE TREE_TALL
+  ]
+  boundingObject Transform {
+    translation 0 0 1.6
+    children [
+      Cylinder {
+        radius 0.14
+        height 3.2
+      }
+    ]
+  }
+  locked TRUE
+}
+DEF ROCK1 Solid {
+  translation 6 -2 0.25
+  name "rock 1"
+  children [
+    DEF ROCK_SHAPE Shape {
+      appearance PBRAppearance {
+        baseColor 0.45 0.44 0.42
+        roughness 1
+        metalness 0
+      }
+      geometry Sphere {
+        radius 0.4
+        subdivision 2
+      }
+    }
+  ]
+  boundingObject Sphere {
+    radius 0.4
+  }
+  locked TRUE
+}
+DEF ROCK2 Solid {
+  translation 15 -6 0.18
+  name "rock 2"
+  children [
+    USE ROCK_SHAPE
+  ]
+  boundingObject Sphere {
+    radius 0.4
+  }
+  locked TRUE
+}
+DEF FIRE Solid {
+  translation 10 -16.5 0
+  name "wildfire"
+  children [
+    Transform {
+      translation 0 0 0.01
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.08 0.06 0.05
+            roughness 1
+            metalness 0
+          }
+          geometry Cylinder {
+            radius 1.9
+            height 0.02
+          }
+        }
+      ]
+    }
+    Transform {
+      translation 0 0 0.8
+      children [
+        Shape {
+          appearance DEF FLAME_ORANGE PBRAppearance {
+            baseColor 1 0.45 0.05
+            emissiveColor 1 0.45 0.05
+            emissiveIntensity 8
+            roughness 1
+            metalness 0
+          }
+          geometry Cone {
+            bottomRadius 1.1
+            height 1.6
+          }
+        }
+      ]
+    }
+    Transform {
+      translation 0.7 0.5 0.55
+      children [
+        Shape {
+          appearance DEF FLAME_RED PBRAppearance {
+            baseColor 0.95 0.15 0.02
+            emissiveColor 0.95 0.15 0.02
+            emissiveIntensity 6
+            roughness 1
+            metalness 0
+          }
+          geometry Cone {
+            bottomRadius 0.6
+            height 1.1
+          }
+        }
+      ]
+    }
+    Transform {
+      translation -0.6 -0.4 0.5
+      children [
+        Shape {
+          appearance USE FLAME_RED
+          geometry Cone {
+            bottomRadius 0.55
+            height 1.0
+          }
+        }
+      ]
+    }
+    Transform {
+      translation -0.2 0.7 0.45
+      children [
+        Shape {
+          appearance USE FLAME_ORANGE
+          geometry Cone {
+            bottomRadius 0.5
+            height 0.9
+          }
+        }
+      ]
+    }
+    Transform {
+      translation 0.4 -0.7 0.4
+      children [
+        Shape {
+          appearance DEF FLAME_YELLOW PBRAppearance {
+            baseColor 1 0.75 0.1
+            emissiveColor 1 0.7 0.1
+            emissiveIntensity 7
+            roughness 1
+            metalness 0
+          }
+          geometry Cone {
+            bottomRadius 0.45
+            height 0.8
+          }
+        }
+      ]
+    }
+    PointLight {
+      attenuation 0 0 1
+      color 1 0.5 0.1
+      intensity 8
+      location 0 0 1.2
+      radius 25
+      castShadows FALSE
+    }
+  ]
+  locked TRUE
+}
+Robot {
+  translation -20 -20 0
+  name "camera_crew"
+  controller "video_recorder"
+  supervisor TRUE
+  children [
+    Receiver {
+      name "radio_rx"
+      channel 1
+    }
+  ]
+}
+DEF FIREHAWK Robot {
+  translation 0 0 0.08
+  name "FireHawk"
+  model "FireHawk Mk1 quadcopter"
+  controller "wildfire_drone"
+  children [
+    DEF BODY Transform {
+      translation 0 0 0.03
+      children [
+        Shape {
+          appearance DEF BODY_APP PBRAppearance {
+            baseColor 0.15 0.15 0.17
+            roughness 0.6
+            metalness 0.4
+          }
+          geometry Box {
+            size 0.16 0.16 0.05
+          }
+        }
+      ]
+    }
+    DEF BATTERY Transform {
+      translation 0 0 0.065
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.8 0.45 0.05
+            roughness 0.8
+            metalness 0
+          }
+          geometry Box {
+            size 0.09 0.05 0.02
+          }
+        }
+      ]
+    }
+    DEF ARM_A Transform {
+      translation 0 0 0.045
+      rotation 0 0 1 0.7854
+      children [
+        DEF ARM_SHAPE Shape {
+          appearance USE BODY_APP
+          geometry Box {
+            size 0.34 0.024 0.01
+          }
+        }
+      ]
+    }
+    DEF ARM_B Transform {
+      translation 0 0 0.045
+      rotation 0 0 1 -0.7854
+      children [
+        USE ARM_SHAPE
+      ]
+    }
+    DEF POD_FL Transform {
+      translation 0.11 0.11 0.05
+      children [
+        DEF POD_SHAPE Shape {
+          appearance USE BODY_APP
+          geometry Cylinder {
+            radius 0.018
+            height 0.03
+          }
+        }
+      ]
+    }
+    DEF POD_FR Transform {
+      translation 0.11 -0.11 0.05
+      children [
+        USE POD_SHAPE
+      ]
+    }
+    DEF POD_RL Transform {
+      translation -0.11 0.11 0.05
+      children [
+        USE POD_SHAPE
+      ]
+    }
+    DEF POD_RR Transform {
+      translation -0.11 -0.11 0.05
+      children [
+        USE POD_SHAPE
+      ]
+    }
+    DEF LEG_L Transform {
+      translation 0 0.05 -0.015
+      children [
+        DEF LEG_SHAPE Shape {
+          appearance USE BODY_APP
+          geometry Box {
+            size 0.14 0.015 0.03
+          }
+        }
+      ]
+    }
+    DEF LEG_R Transform {
+      translation 0 -0.05 -0.015
+      children [
+        USE LEG_SHAPE
+      ]
+    }
+    Propeller {
+      shaftAxis 0 0 1
+      centerOfThrust 0.11 0.11 0.07
+      thrustConstants 2e-4 0
+      torqueConstants 3e-6 0
+      fastHelixThreshold 55
+      device RotationalMotor {
+        name "m_fl"
+        maxVelocity 500
+        maxTorque 60
+      }
+      fastHelix Solid {
+        translation 0.11 0.11 0.07
+        name "fast helix fl"
+        children [
+          DEF FAST_HELIX_SHAPE Shape {
+            appearance PBRAppearance {
+              baseColor 0.3 0.3 0.3
+              transparency 0.6
+              roughness 1
+              metalness 0
+            }
+            geometry Cylinder {
+              radius 0.1
+              height 0.003
+            }
+          }
+        ]
+      }
+      slowHelix Solid {
+        translation 0.11 0.11 0.07
+        name "slow helix fl"
+        children [
+          DEF BLADES Group {
+            children [
+              Shape {
+                appearance DEF BLADE_APP PBRAppearance {
+                  baseColor 0.85 0.1 0.1
+                  roughness 0.7
+                  metalness 0
+                }
+                geometry Box {
+                  size 0.2 0.015 0.003
+                }
+              }
+              Transform {
+                rotation 0 0 1 1.5708
+                children [
+                  Shape {
+                    appearance USE BLADE_APP
+                    geometry Box {
+                      size 0.2 0.015 0.003
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+    Propeller {
+      shaftAxis 0 0 1
+      centerOfThrust 0.11 -0.11 0.07
+      thrustConstants -2e-4 0
+      torqueConstants 3e-6 0
+      fastHelixThreshold 55
+      device RotationalMotor {
+        name "m_fr"
+        maxVelocity 500
+        maxTorque 60
+      }
+      fastHelix Solid {
+        translation 0.11 -0.11 0.07
+        name "fast helix fr"
+        children [
+          USE FAST_HELIX_SHAPE
+        ]
+      }
+      slowHelix Solid {
+        translation 0.11 -0.11 0.07
+        name "slow helix fr"
+        children [
+          USE BLADES
+        ]
+      }
+    }
+    Propeller {
+      shaftAxis 0 0 1
+      centerOfThrust -0.11 0.11 0.07
+      thrustConstants -2e-4 0
+      torqueConstants 3e-6 0
+      fastHelixThreshold 55
+      device RotationalMotor {
+        name "m_rl"
+        maxVelocity 500
+        maxTorque 60
+      }
+      fastHelix Solid {
+        translation -0.11 0.11 0.07
+        name "fast helix rl"
+        children [
+          USE FAST_HELIX_SHAPE
+        ]
+      }
+      slowHelix Solid {
+        translation -0.11 0.11 0.07
+        name "slow helix rl"
+        children [
+          DEF BLADES_DARK Group {
+            children [
+              Shape {
+                appearance DEF BLADE_APP_DARK PBRAppearance {
+                  baseColor 0.1 0.1 0.1
+                  roughness 0.7
+                  metalness 0
+                }
+                geometry Box {
+                  size 0.2 0.015 0.003
+                }
+              }
+              Transform {
+                rotation 0 0 1 1.5708
+                children [
+                  Shape {
+                    appearance USE BLADE_APP_DARK
+                    geometry Box {
+                      size 0.2 0.015 0.003
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    }
+    Propeller {
+      shaftAxis 0 0 1
+      centerOfThrust -0.11 -0.11 0.07
+      thrustConstants 2e-4 0
+      torqueConstants 3e-6 0
+      fastHelixThreshold 55
+      device RotationalMotor {
+        name "m_rr"
+        maxVelocity 500
+        maxTorque 60
+      }
+      fastHelix Solid {
+        translation -0.11 -0.11 0.07
+        name "fast helix rr"
+        children [
+          USE FAST_HELIX_SHAPE
+        ]
+      }
+      slowHelix Solid {
+        translation -0.11 -0.11 0.07
+        name "slow helix rr"
+        children [
+          USE BLADES_DARK
+        ]
+      }
+    }
+    Camera {
+      translation 0.09 0 0.015
+      rotation 0 1 0 0.7854
+      name "camera"
+      fieldOfView 1.0
+      width 200
+      height 150
+      children [
+        Transform {
+          rotation 0 1 0 -0.7854
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0.05 0.05 0.05
+                roughness 0.4
+                metalness 0.6
+              }
+              geometry Box {
+                size 0.025 0.03 0.025
+              }
+            }
+          ]
+        }
+      ]
+    }
+    GPS {
+      name "gps"
+    }
+    Emitter {
+      name "radio"
+      channel 1
+    }
+    InertialUnit {
+      name "imu"
+    }
+    Gyro {
+      name "gyro"
+    }
+    Compass {
+      name "compass"
+    }
+    DistanceSensor {
+      translation 0 0 -0.03
+      rotation 0 1 0 1.5708
+      name "range_down"
+      lookupTable [
+        0 0 0
+        6 6 0.02
+      ]
+      type "laser"
+      aperture 0.05
+    }
+    LED {
+      translation 0 0 0.085
+      name "alert_led"
+      color [
+        1 0 0
+      ]
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.35 0.02 0.02
+            roughness 0.4
+            metalness 0
+          }
+          geometry Sphere {
+            radius 0.016
+          }
+        }
+      ]
+    }
+  ]
+  boundingObject Transform {
+    translation 0 0 0.03
+    children [
+      Box {
+        size 0.18 0.18 0.09
+      }
+    ]
+  }
+  physics Physics {
+    density -1
+    mass 0.42
+    centerOfMass [
+      0 0 0.02
+    ]
+  }
+}
